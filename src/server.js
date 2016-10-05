@@ -1,7 +1,7 @@
 import express from 'express';
 import noobs from './routes/noobs';
 
-const port = 3002;
+const port = process.env.PORT || 3002;
 const app = express();
 
 app.get('/', (req, res) => {
