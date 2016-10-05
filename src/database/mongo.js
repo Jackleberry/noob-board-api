@@ -3,7 +3,7 @@ import assert from 'assert';
 
 const MongoClient = mongodb.MongoClient;
 
-var url = process.env.DATABASE_URL;
+var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/noob-board';
 
 const fetchNoobs = (noob, callback) => {
   MongoClient.connect(url, (err, db) => {
