@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Noob Board API to serve up Noobs",
   "main": "src/server.js",
+  "engines": {
+    "node": "6.3.1"
+  },
   "scripts": {
     "start-dev": "babel-watch src/server.js",
     "start": "babel-node src/server.js"
