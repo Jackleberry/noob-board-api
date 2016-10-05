@@ -4,7 +4,7 @@
   "description": "Noob Board API to serve up Noobs",
   "main": "src/server.js",
   "scripts": {
-    "start": "babel-watch src/server.js"
+    "start": "node src/server.js"
   },
   "author": "Jackleberry",
   "license": "MIT",
