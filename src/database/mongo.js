@@ -44,7 +44,53 @@ const insertNoob = (name, callback) => {
   });
 };
 
+const deleteNoob = (name, callback) => {
+  MongoClient.connect(url, (err, db) => {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    let noobs = db.collection('noobs');
+    noobs.deleteOne({name}, (error, result) => {
+      assert.equal(error, null);
+      callback();
+    });
+
+    db.close();
+  });
+};
+
+const incrementPoints = (name, pointsType, callback) => {
+  MongoClient.connect(url, (err, db) => {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    let noobs = db.collection('noobs');
+    let query = {};
+    query[pointsType] = 1;
+    noobs.updateOne(
+      { name },
+      { $inc: query },
+      (error, result) => {
+        assert.equal(error, null);
+        callback(result);
+    });
+
+    db.close();
+  });
+};
+
+const incrementNoobPoints = (name, callback) => {
+  incrementPoints(name, 'noobPoints', callback);
+};
+
+const incrementAssassinPoints = (name, callback) => {
+  incrementPoints(name, 'assassinPoints', callback);
+};
+
 export default {
   fetchNoobs,
-  insertNoob
+  insertNoob,
+  deleteNoob,
+  incrementNoobPoints,
+  incrementAssassinPoints
 };
