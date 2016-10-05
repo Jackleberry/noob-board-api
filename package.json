@@ -4,22 +4,23 @@
   "description": "Noob Board API to serve up Noobs",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start-dev": "babel-watch src/server.js",
+    "start": "babel-node src/server.js"
   },
   "author": "Jackleberry",
   "license": "MIT",
   "dependencies": {
     "babel-polyfill": "6.8.0",
     "express": "^4.14.0",
-    "mongodb": "^2.2.10"
-  },
-  "devDependencies": {
+    "mongodb": "^2.2.10",
     "assert": "^1.4.1",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.17.0",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-stage-2": "^6.17.0",
     "babel-watch": "^2.0.3-rc0"
+  },
+  "devDependencies": {
   },
   "repository": {
     "type": "git",
