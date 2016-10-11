@@ -8,7 +8,13 @@ app.get('/', (req, res) => {
   res.send("Hello World");
 });
 
-app.use('/noobs', noobs);
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.use('/api/noobs', noobs);
 
 app.listen(port, (error) => {
   if (error) {

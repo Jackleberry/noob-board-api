@@ -15,9 +15,8 @@ const fetchNoobs = (noob, callback) => {
       assert.equal(err, null);
       console.log("Found the following records");
       console.log(docs);
-      callback(docs);
+      callback(docs.map(doc => Object.assign(doc, {id: doc._id})));
     });
-
     db.close();
   });
 };
