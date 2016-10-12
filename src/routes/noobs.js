@@ -9,20 +9,30 @@ const fetchNoobs = (id, res) => {
   })
 };
 
+const fetchNoob = (id, res) => {
+  database.fetchNoobs(id, (docs) => {
+    if (docs.length > 0) {
+      res.send(docs[0]);
+    } else {
+      res.status(404).json(`Could not find noob with id: ${id}`);
+    }
+  })
+};
+
 router.route('/')
   .get((req, res) => fetchNoobs(null, res))
   .post((req, res) => database.insertNoob(req.body.noob, () => fetchNoobs(null, res)));
 
 router.route('/:id')
-  .get((req, res) => fetchNoobs(req.params.id, res))
+  .get((req, res) => fetchNoob(req.params.id, res))
   .delete((req, res) => database.deleteNoob(req.params.id, () => fetchNoobs(null, res)));
 
 router.post('/:id/noob', (req, res) => {
-  database.incrementNoobPoints(req.params.id, (doc) => fetchNoobs(req.params.id, res))
+  database.incrementNoobPoints(req.params.id, (doc) => fetchNoob(req.params.id, res))
 });
 
 router.post('/:id/assassin', (req, res) => {
-  database.incrementAssassinPoints(req.params.id, (doc) => fetchNoobs(req.params.id, res))
+  database.incrementAssassinPoints(req.params.id, (doc) => fetchNoob(req.params.id, res))
 });
 
 export default router;
