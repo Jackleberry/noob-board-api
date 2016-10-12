@@ -5,12 +5,13 @@ const MongoClient = mongodb.MongoClient;
 
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/noob-board';
 
-const fetchNoobs = (noob, callback) => {
+const fetchNoobs = (id, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
+    console.log(`params: id: ${id}`)
     let noobs = db.collection('noobs');
-    let search = noob ? {'name': noob} : {};
+    let search = id ? {_id: mongodb.ObjectId(id)} : {};
     noobs.find(search).toArray((error, docs) => {
       assert.equal(err, null);
       console.log("Found the following records");
@@ -43,13 +44,13 @@ const insertNoob = (name, callback) => {
   });
 };
 
-const deleteNoob = (name, callback) => {
+const deleteNoob = (id, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
     let noobs = db.collection('noobs');
-    noobs.deleteOne({name}, (error, result) => {
+    noobs.deleteOne({_id: mongodb.ObjectId(id)}, (error, result) => {
       assert.equal(error, null);
       callback();
     });
@@ -58,7 +59,7 @@ const deleteNoob = (name, callback) => {
   });
 };
 
-const incrementPoints = (name, pointsType, callback) => {
+const incrementPoints = (id, pointsType, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
@@ -67,7 +68,7 @@ const incrementPoints = (name, pointsType, callback) => {
     let query = {};
     query[pointsType] = 1;
     noobs.updateOne(
-      { name },
+      { _id: mongodb.ObjectId(id) },
       { $inc: query },
       (error, result) => {
         assert.equal(error, null);
@@ -78,12 +79,12 @@ const incrementPoints = (name, pointsType, callback) => {
   });
 };
 
-const incrementNoobPoints = (name, callback) => {
-  incrementPoints(name, 'noobPoints', callback);
+const incrementNoobPoints = (id, callback) => {
+  incrementPoints(id, 'noobPoints', callback);
 };
 
-const incrementAssassinPoints = (name, callback) => {
-  incrementPoints(name, 'assassinPoints', callback);
+const incrementAssassinPoints = (id, callback) => {
+  incrementPoints(id, 'assassinPoints', callback);
 };
 
 export default {
