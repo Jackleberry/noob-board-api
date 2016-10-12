@@ -9,7 +9,7 @@ const fetchNoobs = (id, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
-    console.log(`params: id: ${id}`)
+    console.log(`params: id: ${id}`);
     let noobs = db.collection('noobs');
     let search = id ? {_id: mongodb.ObjectId(id)} : {};
     noobs.find(search).toArray((error, docs) => {
@@ -26,12 +26,13 @@ const insertNoob = (name, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
+    console.log(`params: name: ${name}`);
 
     let noobs = db.collection('noobs');
     noobs.insertOne({
       name,
       noobPoints: 0,
-      assassinPoints: 1,
+      assassinPoints: 0,
       outOfAction: false
     }, (error, result) => {
       assert.equal(error, null);
