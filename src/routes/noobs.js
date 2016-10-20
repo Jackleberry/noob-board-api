@@ -27,12 +27,20 @@ router.route('/:id')
   .get((req, res) => fetchNoob(req.params.id, res))
   .delete((req, res) => database.deleteNoob(req.params.id, () => fetchNoobs(null, res)));
 
-router.post('/:id/noob', (req, res) => {
+router.post('/:id/noob/increment', (req, res) => {
   database.incrementNoobPoints(req.params.id, (doc) => fetchNoob(req.params.id, res))
 });
 
-router.post('/:id/assassin', (req, res) => {
+router.post('/:id/assassin/increment', (req, res) => {
   database.incrementAssassinPoints(req.params.id, (doc) => fetchNoob(req.params.id, res))
+});
+
+router.post('/:id/noob/decrement', (req, res) => {
+  database.decrementNoobPoints(req.params.id, (doc) => fetchNoob(req.params.id, res))
+});
+
+router.post('/:id/assassin/decrement', (req, res) => {
+  database.decrementAssassinPoints(req.params.id, (doc) => fetchNoob(req.params.id, res))
 });
 
 export default router;

@@ -60,32 +60,38 @@ const deleteNoob = (id, callback) => {
   });
 };
 
-const incrementPoints = (id, pointsType, callback) => {
+const incrementNoobPoints = (id, callback) => {
+  changePoints(id, {'noobPoints': 1}, callback);
+};
+
+const incrementAssassinPoints = (id, callback) => {
+  changePoints(id, {'assassinPoints': 1}, callback);
+};
+
+const changePoints = (id, query, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
     let noobs = db.collection('noobs');
-    let query = {};
-    query[pointsType] = 1;
     noobs.updateOne(
       { _id: mongodb.ObjectId(id) },
       { $inc: query },
       (error, result) => {
         assert.equal(error, null);
         callback(result);
-    });
+      });
 
     db.close();
   });
 };
 
-const incrementNoobPoints = (id, callback) => {
-  incrementPoints(id, 'noobPoints', callback);
+const decrementNoobPoints = (id, callback) => {
+  changePoints(id, {'noobPoints': -1}, callback);
 };
 
-const incrementAssassinPoints = (id, callback) => {
-  incrementPoints(id, 'assassinPoints', callback);
+const decrementAssassinPoints = (id, callback) => {
+  changePoints(id, {'assassinPoints': -1}, callback);
 };
 
 export default {
@@ -93,5 +99,7 @@ export default {
   insertNoob,
   deleteNoob,
   incrementNoobPoints,
-  incrementAssassinPoints
+  incrementAssassinPoints,
+  decrementNoobPoints,
+  decrementAssassinPoints
 };
