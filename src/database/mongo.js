@@ -5,6 +5,52 @@ const MongoClient = mongodb.MongoClient;
 
 var url = process.env.MONGODB_URI || 'mongodb://localhost:27017/noob-board';
 
+const findUser = (identifier, callback) => {
+  MongoClient.connect(url, (err, db) => {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+    let users = db.collection('users');
+    users.findOne(
+      { $or: [{ username: identifier }, { email: identifier }] },
+      (error, doc) => {
+        assert.equal(err, null);
+        console.log("Found the following record");
+        console.log(doc);
+        callback(doc);
+      }
+    );
+    db.close();
+  });
+};
+
+const insertUser = (username, email, password_digest, callback) => {
+  MongoClient.connect(url, (err, db) => {
+    assert.equal(null, err);
+    console.log("Connected successfully to server");
+
+    let users = db.collection('users');
+    users.insertOne({
+      username,
+      email,
+      password_digest
+    }, (error, result) => {
+      assert.equal(error, null);
+      assert.equal(1, result.result.n);
+      assert.equal(1, result.ops.length);
+      console.log('......................');
+      console.log(result.result.ok);
+      console.log(result.ops);
+      console.log(result.insertedCount);
+      console.log(result.insertedId);
+      console.log(result);
+      console.log('......................');
+      callback(result.ops[0]);
+    });
+
+    db.close();
+  });
+};
+
 const fetchNoobs = (id, callback) => {
   MongoClient.connect(url, (err, db) => {
     assert.equal(null, err);
@@ -95,6 +141,8 @@ const decrementAssassinPoints = (id, callback) => {
 };
 
 export default {
+  findUser,
+  insertUser,
   fetchNoobs,
   insertNoob,
   deleteNoob,

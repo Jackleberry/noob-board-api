@@ -1,5 +1,6 @@
 import express  from 'express';
 import database from '../database/mongo';
+import authenticate from '../middleware/authenticate';
 
 const router = express.Router({ mergeParams: true });
 
@@ -21,7 +22,7 @@ const fetchNoob = (id, res) => {
 
 router.route('/')
   .get((req, res) => fetchNoobs(null, res))
-  .post((req, res) => database.insertNoob(req.body.noob, () => fetchNoobs(null, res)));
+  .post(authenticate, (req, res) => database.insertNoob(req.body.noob, () => fetchNoobs(null, res)));
 
 router.route('/:id')
   .get((req, res) => fetchNoob(req.params.id, res))
