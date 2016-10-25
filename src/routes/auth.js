@@ -16,9 +16,15 @@ router.post('/', (req, res) => {
       if (bcrypt.compareSync(password, user.get("password_digest"))) {
         const token = jwt.sign({
           id: user.get("id"),
-          username: user.get("username")
+          username: user.get("username"),
+          email: user.get("email")
         }, config.jwtSecret);
-        res.json({token});
+        res.json({
+          id: user.get("id"),
+          username: user.get("username"),
+          email: user.get("email"),
+          token
+        });
       } else {
         res.status(401).json({ errors: { form: "Invalid Credentials" } });
       }
