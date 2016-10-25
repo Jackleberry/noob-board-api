@@ -7,11 +7,11 @@ export default function validateInput(data) {
   console.log(data);
 
   if (Validator.isNull(data.username)) {
-    errors.username = 'This field is required';
+    errors.username = 'Username is a required field';
   }
 
   if (Validator.isNull(data.email)) {
-    errors.email = 'This field is required';
+    errors.email = 'Email is a required field';
   }
 
   if (!Validator.isEmail(data.email)) {
@@ -19,11 +19,11 @@ export default function validateInput(data) {
   }
 
   if (Validator.isNull(data.password)) {
-    errors.password = 'This field is required';
+    errors.password = 'Password is a required field';
   }
 
   if (Validator.isNull(data.passwordConfirmation)) {
-    errors.passwordConfirmation = 'This field is required';
+    errors.passwordConfirmation = 'Confirm Password is a required field';
   }
 
   if (!Validator.equals(data.password, data.passwordConfirmation)) {
